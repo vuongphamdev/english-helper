@@ -65,7 +65,7 @@
        Paste your Apps Script web app URL (ends in /exec) between the quotes.
        You can also override it per-visit with ?api=... in the address bar.
        ===================================================================== */
-    const SHEET_API = "https://script.google.com/macros/s/AKfycbyXpKt--5P4Lw1YFbRyhDIwoP8zhJLT7iyj53fjy7wplPnkxyAX5TVh8UABpUz20FvjuQ/exec";
+    const SHEET_API = "https://script.google.com/macros/s/AKfycbyH7leBW3w9P5uDEg_lsxoakPPCNtGhYLTy3K1qXAO6E9dWksGML7r5f1Ed1D6DBB0PKA/exec";
 
     const API_URL = new URLSearchParams(location.search).get("api") || SHEET_API;
     const TYPE_TO_SECTION = { vocab: "vocabulary", slang: "slang", collocation: "collocations", sentence: "sentences" };
