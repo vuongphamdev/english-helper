@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>English Reference — tenses, conditionals, patterns</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;600&family=Gentium+Book+Plus&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="shell">
+
+    <header class="masthead">
+      <h1 class="headword">English</h1>
+      <p class="pron">/ˈɪŋ.ɡlɪʃ/ &nbsp;<em>n. &amp; adj.</em></p>
+      <p class="sense">A working reference, built from the ground up: every <b>tense</b>, every <b>conditional</b>, the
+        sentence <b>patterns</b> that hold them together — plus <b>words</b>, <b>slang</b>, and <b>sounds</b>. Search
+        it, or read it front to back.</p>
+      <div class="meta">
+        <span id="metaCount">— entries</span>
+        <span>6 sections</span>
+        <span>Last edited by you</span>
+      </div>
+    </header>
+
+    <div class="searchbar">
+      <div class="searchwrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round">
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="M20 20l-4.5-4.5"></path>
+        </svg>
+        <input id="q" type="search" autocomplete="off" spellcheck="false"
+          placeholder="Search everything — try: perfect, wish, would have, /θ/, hang out">
+        <button id="clear" type="button">Clear</button>
+        <span class="slash">/</span>
+      </div>
+      <div class="statusline">
+        <span id="status">All sections</span>
+        <span id="sync"></span>
+        <button id="random" type="button">Random entry</button>
+      </div>
+    </div>
+
+    <div class="layout">
+      <nav id="tabs" role="tablist" aria-label="Sections"></nav>
+      <main id="main"></main>
+    </div>
+
+    <footer>
+      Add your own: open <code>data.js</code>, find <code>ENTRIES</code>, copy any object, change the words.<br>
+      Fields: <code>section</code> <code>title</code> <code>ipa</code> <code>eyebrow</code> <code>use</code>
+      <code>patterns[]</code> <code>signals[]</code> <code>examples[]</code> <code>fixes[]</code> <code>terms[]</code>
+      <code>group</code><br>
+      Everything you type is searchable automatically. No build step, no server — just save and reload.
+    </footer>
+  </div>
+
+  <script src="data.js"></script>
+  <script>
+    /* SECTIONS and ENTRIES are loaded from data.js */
+
+    /* =====================================================================
+       GOOGLE SHEET
+       Paste your Apps Script web app URL (ends in /exec) between the quotes.
+       You can also override it per-visit with ?api=... in the address bar.
+       ===================================================================== */
+    const SHEET_API = "https://script.google.com/macros/s/AKfycbyXpKt--5P4Lw1YFbRyhDIwoP8zhJLT7iyj53fjy7wplPnkxyAX5TVh8UABpUz20FvjuQ/exec";
+
+    const API_URL = new URLSearchParams(location.search).get("api") || SHEET_API;
+    const TYPE_TO_SECTION = { vocab: "vocabulary", slang: "slang", collocation: "collocations", sentence: "sentences" };
+    let sheetState = { status: API_URL ? "loading" : "off", msg: "", at: null };
+
+    function fixAudioUrl(u) {
+      u = String(u || "").trim();
+      if (!u) return "";
+      if (u.startsWith("//")) return "https:" + u;      // the API omits the scheme
+      if (u.startsWith("http://")) return "https://" + u.slice(7);
+      return u.startsWith("https://") ? u : "";
+    }
+
+    function sheetToEntry(item) {
+      return {
+        kind: "word",
+        section: TYPE_TO_SECTION[item.type] || "vocabulary",
+        group: "From my sheet",
+        title: item.term,
+        ipa: item.ipa || "",
+        audio: fixAudioUrl(item.audio),
+        meaning: item.meaning || "",
+        example: item.example || "",
+        note: item.note || "",
+        tags: item.tags || [],
+        added: item.added || ""
+      };
+    }
+
+    async function loadSheet() {
+      if (!API_URL) { sheetState = { status: "off" }; return; }
+      sheetState = { status: "loading" };
+      renderSync();
+      try {
+        const res = await fetch(API_URL + (API_URL.includes("?") ? "&" : "?") + "t=" + Date.now());
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error || "the script returned an error");
+
+        // drop anything loaded previously, then add the fresh rows
+        for (let i = ENTRIES.length - 1; i >= 0; i--) { if (ENTRIES[i].kind === "word") ENTRIES.splice(i, 1); }
+        data.items.slice().reverse().forEach(it => ENTRIES.push(sheetToEntry(it)));
+
+        sheetState = { status: "ok", count: data.items.length, at: new Date() };
+        document.getElementById("metaCount").textContent = ENTRIES.length + " entries";
+      } catch (err) {
+        sheetState = { status: "error", msg: err.message };
+      }
+      render();
+    }
+
+    function renderSync() {
+      const el = document.getElementById("sync");
+      const s = sheetState;
+      if (s.status === "off") {
+        el.innerHTML = '<span class="dot off"></span>Sheet not connected';
+      } else if (s.status === "loading") {
+        el.innerHTML = '<span class="dot load"></span>Reading your sheet\u2026';
+      } else if (s.status === "ok") {
+        const t = s.at.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+        el.innerHTML = '<span class="dot ok"></span>' + s.count + ' from sheet \u00b7 ' + t +
+          ' <button id="refresh" type="button">Refresh</button>';
+      } else {
+        el.innerHTML = '<span class="dot err"></span>Sheet didn\u2019t load: ' + esc(s.msg) +
+          ' <button id="refresh" type="button">Try again</button>';
+      }
+      const r = document.getElementById("refresh");
+      if (r) r.addEventListener("click", loadSheet);
+    }
+
+    /* =====================================================================
+       RENDERING
+       ===================================================================== */
+    const esc = s => String(s).replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+    // content may contain intentional <b>/<i>; escape only & then highlight
+    const soft = s => String(s).replace(/&(?!(amp|lt|gt|#\d+|[a-z]+);)/gi, "&amp;");
+
+    let query = "";
+    let active = SECTIONS[0].id;
+
+    function hl(str) {
+      const t = soft(str);
+      if (!query) return t;
+      const re = new RegExp("(" + query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "ig");
+      // split into tags and text; only highlight inside text nodes
+      return t.split(/(<[^>]*>)/g)
+        .map(part => part.startsWith("<") ? part : part.replace(re, "<mark>$1</mark>"))
+        .join("");
+    }
+
+    function haystack(e) {
+      return JSON.stringify(e).toLowerCase();
+    }
+
+    function matches(e) { return !query || haystack(e).includes(query); }
+
+    /* ---------------------- audio ----------------------
+       Two sources, in order: the recording from the dictionary, then the
+       browser's own voice. The second one always works offline and covers
+       slang and whole sentences, which have no recording.
+    --------------------------------------------------- */
+    const CAN_SPEAK = typeof window !== "undefined" && "speechSynthesis" in window;
+
+    function sayButton(text, audio) {
+      if (!audio && !CAN_SPEAK) return "";
+      return '<button class="say" type="button" data-audio="' + esc(audio || "") +
+        '" data-text="' + esc(text) + '" aria-label="Say ' + esc(text) + '">' +
+        (audio ? "\u25B6 say it" : "\u25B6 read it") + '</button>';
+    }
+
+    let playing = null;
+
+    function speakIt(text, btn, hadRecording) {
+      if (!CAN_SPEAK) { btn.textContent = "\u2717 no audio here"; return; }
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = "en-US";
+      u.rate = 0.92;
+      const voice = window.speechSynthesis.getVoices().find(v => /^en[-_]/i.test(v.lang));
+      if (voice) u.voice = voice;
+      const done = () => { btn.classList.remove("playing"); btn.textContent = hadRecording ? "\u25B6 read it" : "\u25B6 read it"; };
+      u.onend = done;
+      u.onerror = () => { btn.classList.remove("playing"); btn.textContent = "\u2717 no audio here"; };
+      btn.classList.add("playing");
+      window.speechSynthesis.speak(u);
+    }
+
+    function playFrom(btn) {
+      const url = btn.dataset.audio, text = btn.dataset.text;
+      if (playing) { playing.pause(); }
+      document.querySelectorAll(".say.playing").forEach(x => x.classList.remove("playing"));
+      if (CAN_SPEAK) window.speechSynthesis.cancel();
+
+      if (!url) return speakIt(text, btn, false);
+
+      const a = new Audio(url);
+      playing = a;
+      let switched = false;
+      const fallback = () => { if (switched) return; switched = true; speakIt(text, btn, true); };
+      a.addEventListener("error", fallback);
+      a.addEventListener("ended", () => btn.classList.remove("playing"));
+      btn.classList.add("playing");
+      a.play().catch(fallback);
+    }
+
+    function wordHTML(e) {
+      let h = '<article class="entry word" id="' + slug(e) + '">';
+      h += '<div class="wordhead"><h3>' + hl(e.title) + '</h3>';
+      if (e.ipa) h += '<span class="ipa">' + hl(e.ipa) + '</span>';
+      h += sayButton(e.title, e.audio);
+      h += '</div>';
+      if (e.meaning) e.meaning.split("\n").forEach(m => h += '<p class="use">' + hl(m) + '</p>');
+      if (e.example) h += '<ul class="ex"><li>' + hl(e.example) + '</li></ul>';
+      if (e.note) h += '<p class="note">' + hl(e.note) + '</p>';
+      const chips = (e.tags || []).slice();
+      if (e.added) chips.push("added " + e.added);
+      if (chips.length) h += '<div class="chips">' + chips.map(c => '<span class="chip">' + hl(c) + '</span>').join("") + '</div>';
+      return h + '</article>';
+    }
+
+    function entryHTML(e) {
+      if (e.kind === "word") return wordHTML(e);
+      let h = '<article class="entry" id="' + slug(e) + '">';
+      if (e.eyebrow) h += '<div class="eyebrow">' + hl(e.eyebrow) + '</div>';
+      h += '<h3>' + hl(e.title) + '</h3>';
+      if (e.ipa) h += '<span class="ipa">' + hl(e.ipa) + '</span>';
+      if (e.use) h += '<p class="use">' + hl(e.use) + '</p>';
+
+      if (e.patterns && e.patterns.length) {
+        h += '<div class="label">Formula</div>';
+        e.patterns.forEach(p => {
+          h += '<div class="pattern"><span class="sign">' + soft(p.sign || "\u25B8") + '</span><span class="formula">' + hl(p.f) + '</span></div>';
+        });
+      }
+      if (e.examples && e.examples.length) {
+        h += '<div class="label">Examples</div><ul class="ex">';
+        e.examples.forEach(x => h += '<li>' + hl(x) + '</li>');
+        h += '</ul>';
+      }
+      if (e.terms && e.terms.length) {
+        h += '<div class="label">Entries</div><dl class="terms">';
+        e.terms.forEach(t => {
+          h += '<div><dt>' + hl(t.t) + (t.ipa ? '<span class="ipa">' + soft(t.ipa) + '</span>' : '') +
+            (t.reg ? '<span class="reg">' + soft(t.reg) + '</span>' : '') +
+            (e.section === "vocabulary" || e.section === "slang" ? " " + sayButton(t.t, "") : "") +
+            '</dt><dd>' + hl(t.d || "") +
+            (t.ex ? '<span class="ex">' + hl(t.ex) + '</span>' : '') + '</dd></div>';
+        });
+        h += '</dl>';
+      }
+      if (e.fixes && e.fixes.length) {
+        h += '<div class="label">Common mistake</div>';
+        e.fixes.forEach(f => {
+          h += '<div class="fix"><s>' + hl(f.bad) + '</s><span class="arrow">\u2192</span>' + hl(f.good) + '</div>';
+        });
+      }
+      if (e.signals && e.signals.length) {
+        h += '<div class="label">Signal words</div><div class="chips">' +
+          e.signals.map(s => '<span class="chip">' + hl(s) + '</span>').join("") + '</div>';
+      }
+      return h + '</article>';
+    }
+
+    function slug(e) {
+      return (e.section + "-" + e.title).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    }
+
+    function countIn(id) { return ENTRIES.filter(e => e.section === id && matches(e)).length; }
+
+    function renderTabs() {
+      document.getElementById("tabs").innerHTML = SECTIONS.map(s => {
+        const n = countIn(s.id);
+        return '<button class="tab" role="tab" data-id="' + s.id + '" aria-selected="' + (s.id === active) + '"' +
+          (query && n === 0 ? ' style="opacity:.4"' : '') + '>' + s.label +
+          '<span class="n">' + n + '</span></button>';
+      }).join("");
+    }
+
+    function renderMain() {
+      const main = document.getElementById("main");
+      const shown = query ? SECTIONS : SECTIONS.filter(s => s.id === active);
+      let html = "";
+      let total = 0;
+
+      shown.forEach(sec => {
+        const list = ENTRIES.filter(e => e.section === sec.id && matches(e));
+        if (query && list.length === 0) return;
+        total += list.length;
+        html += '<section class="sectionhead"><h2>' + (query ? sec.label : sec.title) + '</h2>' +
+          (query ? '' : '<p>' + sec.blurb + '</p>') + '</section>';
+        let lastGroup = null;
+        list.forEach(e => {
+          if (!query && e.group && e.group !== lastGroup) {
+            html += '<div class="grouphead">' + e.group + '</div>';
+            lastGroup = e.group;
+          }
+          html += entryHTML(e);
+        });
+      });
+
+      if (!query && ENTRIES.filter(e => e.section === active).length === 0) {
+        html += '<div class="empty"><h3>Nothing here yet</h3><p>' +
+          (API_URL
+            ? 'Add a row to your sheet with the type set to <b>' +
+            (Object.keys(TYPE_TO_SECTION).find(k => TYPE_TO_SECTION[k] === active) || active) +
+            '</b>, then hit Refresh.'
+            : 'This section fills up from your Google Sheet. Paste your Apps Script web app URL into ' +
+            '<b>SHEET_API</b> near the bottom of this file, or add <b>?api=YOUR_URL</b> to the address bar.') +
+          '</p></div>';
+      }
+
+      if (query && total === 0) {
+        html = '<div class="empty"><h3>Nothing matches \u201c' + esc(query) + '\u201d</h3>' +
+          '<p>Try a shorter word, or a piece of a formula like <i>had been</i>. ' +
+          'If it should be here, add it to the ENTRIES list at the top of this file.</p></div>';
+      }
+      main.innerHTML = html;
+
+      const st = document.getElementById("status");
+      st.textContent = query ? (total + " " + (total === 1 ? "match" : "matches") + " across all sections")
+        : (SECTIONS.find(s => s.id === active).label + " \u00b7 " + countIn(active) + " entries");
+    }
+
+    function render() { renderTabs(); renderMain(); renderSync(); }
+
+    /* --------------------------- events --------------------------- */
+    document.getElementById("tabs").addEventListener("click", ev => {
+      const b = ev.target.closest(".tab");
+      if (!b) return;
+      active = b.dataset.id;
+      if (query) { query = ""; document.getElementById("q").value = ""; document.getElementById("clear").style.display = "none"; }
+      history.replaceState(null, "", "#" + active);
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    const qEl = document.getElementById("q");
+    qEl.addEventListener("input", () => {
+      query = qEl.value.trim().toLowerCase();
+      document.getElementById("clear").style.display = query ? "block" : "none";
+      render();
+    });
+    document.getElementById("clear").addEventListener("click", () => {
+      qEl.value = ""; query = ""; qEl.focus();
+      document.getElementById("clear").style.display = "none";
+      render();
+    });
+    document.addEventListener("keydown", ev => {
+      if (ev.key === "/" && document.activeElement !== qEl) { ev.preventDefault(); qEl.focus(); }
+      if (ev.key === "Escape" && document.activeElement === qEl) { qEl.blur(); }
+    });
+    document.getElementById("random").addEventListener("click", () => {
+      const e = ENTRIES[Math.floor(Math.random() * ENTRIES.length)];
+      qEl.value = ""; query = ""; document.getElementById("clear").style.display = "none";
+      active = e.section;
+      render();
+      const el = document.getElementById(slug(e));
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" }); el.classList.add("flash");
+        setTimeout(() => el.classList.remove("flash"), 1200);
+      }
+    });
+
+    document.getElementById("main").addEventListener("click", ev => {
+      const b = ev.target.closest(".say");
+      if (b) playFrom(b);
+    });
+    // Chrome loads its voice list asynchronously
+    if (CAN_SPEAK) window.speechSynthesis.onvoiceschanged = () => { };
+
+    /* --------------------------- start --------------------------- */
+    const hash = location.hash.replace("#", "");
+    if (SECTIONS.some(s => s.id === hash)) active = hash;
+    document.getElementById("metaCount").textContent = ENTRIES.length + " entries";
+    render();
+    loadSheet();
+  </script>
+</body>
+
+</html>
