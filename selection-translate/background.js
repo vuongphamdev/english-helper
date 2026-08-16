@@ -57,11 +57,6 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 });
 
-// Open side panel when the toolbar icon is clicked (no default_popup).
-chrome.action.onClicked.addListener((tab) => {
-  chrome.sidePanel.open({ tabId: tab.id });
-});
-
 chrome.contextMenus.onClicked.addListener((info, tab) => {
   if (!tab?.id) return;
   const id = String(info.menuItemId || "");
@@ -100,6 +95,15 @@ function send(tabId, message, frameId) {
 /* ------------------------------------------------------------ messaging */
 
 chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
+  if (msg?.type === "qt:open-sidepanel") {
+    chrome.sidePanel.open({ tabId: msg.tabId }).then(() => {
+      sendResponse({ ok: true });
+    }).catch(() => {
+      sendResponse({ ok: false });
+    });
+    return true;
+  }
+
   if (msg?.type === "qt:translate") {
     translate(msg.text, msg.target, msg.provider)
       .then((result) => sendResponse({ ok: true, ...result }))
@@ -282,11 +286,12 @@ async function saveToSheet(item) {
   const term = String(item?.term || "").trim();
   if (!term) throw new Error("Nothing to save");
 
-  // Detect POS and translate to Vietnamese in parallel
-  const [pos, vietnamese] = await Promise.all([
+  // Detect POS; only auto-translate to Vietnamese if the user didn't provide one
+  const [pos, autoVi] = await Promise.all([
     detectPOS(term),
-    translateToVi(term)
+    item.vietnamese ? Promise.resolve("") : translateToVi(term)
   ]);
+  const vietnamese = item.vietnamese || autoVi;
 
   let res;
   try {

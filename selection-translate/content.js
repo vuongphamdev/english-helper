@@ -749,7 +749,8 @@
       `${escapeHtml(t.label)}</button>`
     ).join("");
 
-    const noteSeed = translation.forText === text ? translation.text : "";
+    const viSeed = (translation.forText === text && translation.lang === "vi") ? translation.text : "";
+    const noteSeed = (translation.forText === text && translation.lang !== "vi") ? translation.text : "";
 
     body.innerHTML =
       `<div class="save">` +
@@ -762,6 +763,9 @@
         `<label class="f"><span>Note</span>` +
           `<input class="s-note" value="${escapeHtml(noteSeed)}" ` +
           `placeholder="Meaning in your own words"></label>` +
+        `<label class="f"><span>Vietnamese</span>` +
+          `<input class="s-vi" value="${escapeHtml(viSeed)}" ` +
+          `placeholder="Auto-filled"></label>` +
         `<label class="f"><span>Tags</span>` +
           `<input class="s-tags" placeholder="work, travel"></label>` +
         `<button class="save-go" data-act="do-save">Save to sheet</button>` +
@@ -770,9 +774,18 @@
 
     placePanel(anchor());
 
-    // No translation yet? Fetch one quietly and drop it into the note, unless
-    // the user has already started writing their own.
-    if (!noteSeed) {
+    // Auto-fill Vietnamese if no seed from translation tab
+    if (!viSeed) {
+      const vi = root.querySelector(".s-vi");
+      chrome.runtime.sendMessage({
+        type: "qt:translate", text, target: "vi", provider: settings.provider
+      }).then((res) => {
+        if (res?.ok && vi.isConnected && !vi.value.trim()) vi.value = res.text;
+      }).catch(() => {});
+    }
+
+    // Auto-fill note from non-Vietnamese translation if no seed
+    if (!noteSeed && translation.forText !== text) {
       const note = root.querySelector(".s-note");
       chrome.runtime.sendMessage({
         type: "qt:translate", text, target: settings.targetLang, provider: settings.provider
@@ -797,6 +810,7 @@
       term,
       example: root.querySelector(".s-ex").value.trim(),
       note: root.querySelector(".s-note").value.trim(),
+      vietnamese: root.querySelector(".s-vi").value.trim(),
       tags: root.querySelector(".s-tags").value.trim()
     };
 

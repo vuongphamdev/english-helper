@@ -10,16 +10,24 @@ const SECTIONS = [
         blurb: "Tenses, conditionals, and sentence patterns — the rules that hold English together."
       },
       {
+        id: "vocabulary", label: "Vocabulary", title: "Words that pull their weight",
+        blurb: "Grouped by job, not alphabet. Learn the collocation, not the isolated word."
+      },
+      {
+        id: "slang", label: "Slang", title: "Everyday informal English",
+        blurb: "What people actually say. Register tags tell you where each one is safe."
+      },
+      {
         id: "collocations", label: "Collocations", title: "Words that travel together",
-        blurb: "Pairings native speakers use without thinking: make a decision, heavy rain, take responsibility. Getting these right does more for fluency than more vocabulary."
+        blurb: "Pairings native speakers use without thinking: make a decision, heavy rain, take responsibility."
       },
       {
         id: "sentences", label: "Sentences", title: "Sentences worth keeping",
-        blurb: "Lines you liked and wrote down. Whole sentences stick better than single words \u2014 you keep the grammar, the collocation, and the rhythm together."
+        blurb: "Whole sentences stick better than single words \u2014 you keep the grammar, the collocation, and the rhythm together."
       },
       {
         id: "sounds", label: "Pronunciation", title: "Sounds and spelling",
-        blurb: "The rules that are actually rules: -ed endings, -s endings, word stress, the schwa. Plus the sounds that trip up most learners."
+        blurb: "The rules that are actually rules: -ed endings, -s endings, word stress, the schwa."
       }
     ];
 
