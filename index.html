@@ -37,7 +37,7 @@
       </div>
       <div class="statusline">
         <span id="status">All sections</span>
-        <button id="random" type="button">Random entry</button>
+
         <select id="sortctl" aria-label="Sort order">
           <option value="newest">Newest first</option>
           <option value="oldest">Oldest first</option>
@@ -396,17 +396,7 @@
       if (ev.key === "/" && document.activeElement !== qEl) { ev.preventDefault(); qEl.focus(); }
       if (ev.key === "Escape" && document.activeElement === qEl) { qEl.blur(); }
     });
-    document.getElementById("random").addEventListener("click", () => {
-      const e = ENTRIES[Math.floor(Math.random() * ENTRIES.length)];
-      qEl.value = ""; query = ""; document.getElementById("clear").style.display = "none";
-      active = e.section;
-      render();
-      const el = document.getElementById(slug(e));
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth", block: "center" }); el.classList.add("flash");
-        setTimeout(() => el.classList.remove("flash"), 1200);
-      }
-    });
+
 
     document.getElementById("sortctl").addEventListener("change", ev => {
       sortMode = ev.target.value;
