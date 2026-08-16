@@ -609,7 +609,10 @@
     if (e.key === "Escape") hideAll();
   }, true);
 
-  window.addEventListener("scroll", () => hideAll(), true);
+  window.addEventListener("scroll", () => {
+    // Only hide the bubble on scroll, keep the panel open
+    if (!panel.classList.contains("on")) hideAll();
+  }, true);
   window.addEventListener("resize", () => hideAll());
 
   /* ---------------------------------------------------------- positioning */
