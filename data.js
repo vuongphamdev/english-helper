@@ -6,24 +6,8 @@
 
 const SECTIONS = [
       {
-        id: "tenses", label: "Tenses", title: "The 13 tenses",
-        blurb: "Time (past / present / future) crossed with aspect (simple / continuous / perfect / perfect continuous). Learn the grid, not 13 separate rules."
-      },
-      {
-        id: "conditionals", label: "Conditionals", title: "If, and what follows",
-        blurb: "Each conditional pairs a specific if-clause with a specific result-clause. Mixing the pair is the most common mistake."
-      },
-      {
-        id: "patterns", label: "Patterns", title: "Sentence formulas",
-        blurb: "Reusable structures: passive, reported speech, questions, comparatives, relative clauses. Fill the slots and the sentence works."
-      },
-      {
-        id: "vocabulary", label: "Vocabulary", title: "Words that pull their weight",
-        blurb: "Grouped by job, not alphabet. Learn the collocation, not the isolated word — you need the whole phrase to sound natural."
-      },
-      {
-        id: "slang", label: "Slang", title: "Everyday informal English",
-        blurb: "What people actually say. Register tags tell you where each one is safe: casual with friends, or fine at work too."
+        id: "grammar", label: "Grammar", title: "Grammar",
+        blurb: "Tenses, conditionals, and sentence patterns — the rules that hold English together."
       },
       {
         id: "collocations", label: "Collocations", title: "Words that travel together",
@@ -43,7 +27,7 @@ const ENTRIES = [
 
       /* ---------------------------- TENSES ---------------------------- */
       {
-        section: "tenses", group: "Present", eyebrow: "Present · simple", title: "Present Simple",
+        section: "grammar", group: "Tenses · Present", eyebrow: "Present · simple", title: "Present Simple",
         use: "Facts, habits, routines, timetables, and states that are generally true.",
         patterns: [
           { sign: "+", f: "S + V(<b>s/es</b> for he/she/it)" },
@@ -56,7 +40,7 @@ const ENTRIES = [
       },
 
       {
-        section: "tenses", group: "Present", eyebrow: "Present · continuous", title: "Present Continuous",
+        section: "grammar", group: "Tenses · Present", eyebrow: "Present · continuous", title: "Present Continuous",
         use: "Happening right now, happening around now, a temporary situation, or a fixed future arrangement.",
         patterns: [
           { sign: "+", f: "S + <b>am/is/are</b> + V-<b>ing</b>" },
@@ -69,7 +53,7 @@ const ENTRIES = [
       },
 
       {
-        section: "tenses", group: "Present", eyebrow: "Present · perfect", title: "Present Perfect",
+        section: "grammar", group: "Tenses · Present", eyebrow: "Present · perfect", title: "Present Perfect",
         use: "A past action with a present result, life experience with no stated time, or something unfinished that continues to now.",
         patterns: [
           { sign: "+", f: "S + <b>have/has</b> + V3 (past participle)" },
@@ -82,7 +66,7 @@ const ENTRIES = [
       },
 
       {
-        section: "tenses", group: "Present", eyebrow: "Present · perfect continuous", title: "Present Perfect Continuous",
+        section: "grammar", group: "Tenses · Present", eyebrow: "Present · perfect continuous", title: "Present Perfect Continuous",
         use: "An activity that started in the past and is still going, with the focus on duration — or on the visible result of that activity.",
         patterns: [
           { sign: "+", f: "S + <b>have/has been</b> + V-<b>ing</b>" },
@@ -95,7 +79,7 @@ const ENTRIES = [
       },
 
       {
-        section: "tenses", group: "Past", eyebrow: "Past · simple", title: "Past Simple",
+        section: "grammar", group: "Tenses · Past", eyebrow: "Past · simple", title: "Past Simple",
         use: "A finished action at a finished time. The default tense for telling a story.",
         patterns: [
           { sign: "+", f: "S + V2 (V-<b>ed</b> or irregular)" },
@@ -108,7 +92,7 @@ const ENTRIES = [
       },
 
       {
-        section: "tenses", group: "Past", eyebrow: "Past · continuous", title: "Past Continuous",
+        section: "grammar", group: "Tenses · Past", eyebrow: "Past · continuous", title: "Past Continuous",
         use: "An action in progress at a past moment — usually the background that a shorter past simple action interrupts.",
         patterns: [
           { sign: "+", f: "S + <b>was/were</b> + V-<b>ing</b>" },
@@ -122,7 +106,7 @@ const ENTRIES = [
       },
 
       {
-        section: "tenses", group: "Past", eyebrow: "Past · perfect", title: "Past Perfect",
+        section: "grammar", group: "Tenses · Past", eyebrow: "Past · perfect", title: "Past Perfect",
         use: "The earlier of two past events. Use it to make the order clear when you aren't telling things in order.",
         patterns: [
           { sign: "+", f: "S + <b>had</b> + V3" },
@@ -135,7 +119,7 @@ const ENTRIES = [
       },
 
       {
-        section: "tenses", group: "Past", eyebrow: "Past · perfect continuous", title: "Past Perfect Continuous",
+        section: "grammar", group: "Tenses · Past", eyebrow: "Past · perfect continuous", title: "Past Perfect Continuous",
         use: "An activity that had been running for a while before another past moment. Focus on how long.",
         patterns: [
           { sign: "+", f: "S + <b>had been</b> + V-<b>ing</b>" },
@@ -147,7 +131,7 @@ const ENTRIES = [
       },
 
       {
-        section: "tenses", group: "Future", eyebrow: "Future · will", title: "Future Simple (will)",
+        section: "grammar", group: "Tenses · Future", eyebrow: "Future · will", title: "Future Simple (will)",
         use: "Decisions made at the moment of speaking, predictions, promises, offers, and refusals.",
         patterns: [
           { sign: "+", f: "S + <b>will</b> + V(bare)" },
@@ -160,7 +144,7 @@ const ENTRIES = [
       },
 
       {
-        section: "tenses", group: "Future", eyebrow: "Future · going to", title: "Future — be going to",
+        section: "grammar", group: "Tenses · Future", eyebrow: "Future · going to", title: "Future — be going to",
         use: "A plan or intention decided before now, or a prediction based on evidence you can see right now.",
         patterns: [
           { sign: "+", f: "S + <b>am/is/are going to</b> + V(bare)" },
@@ -173,7 +157,7 @@ const ENTRIES = [
       },
 
       {
-        section: "tenses", group: "Future", eyebrow: "Future · continuous", title: "Future Continuous",
+        section: "grammar", group: "Tenses · Future", eyebrow: "Future · continuous", title: "Future Continuous",
         use: "An action that will be in progress at a specific future time — or a polite, neutral way to ask about someone's plans.",
         patterns: [
           { sign: "+", f: "S + <b>will be</b> + V-<b>ing</b>" },
@@ -185,7 +169,7 @@ const ENTRIES = [
       },
 
       {
-        section: "tenses", group: "Future", eyebrow: "Future · perfect", title: "Future Perfect",
+        section: "grammar", group: "Tenses · Future", eyebrow: "Future · perfect", title: "Future Perfect",
         use: "Something that will already be complete before a deadline in the future.",
         patterns: [
           { sign: "+", f: "S + <b>will have</b> + V3" },
@@ -197,7 +181,7 @@ const ENTRIES = [
       },
 
       {
-        section: "tenses", group: "Future", eyebrow: "Future · perfect continuous", title: "Future Perfect Continuous",
+        section: "grammar", group: "Tenses · Future", eyebrow: "Future · perfect continuous", title: "Future Perfect Continuous",
         use: "How long something will have been going on, measured up to a future point. Rare, but worth recognising.",
         patterns: [
           { sign: "+", f: "S + <b>will have been</b> + V-<b>ing</b>" },
@@ -209,14 +193,14 @@ const ENTRIES = [
 
       /* ------------------------- CONDITIONALS ------------------------- */
       {
-        section: "conditionals", eyebrow: "Type 0", title: "Zero Conditional",
+        section: "grammar", group: "Conditionals", eyebrow: "Type 0", title: "Zero Conditional",
         use: "A general truth or an automatic result. Both clauses are present simple — no if about it, really.",
         patterns: [{ sign: "\u25B8", f: "<b>If</b> + present simple, <b>+</b> present simple" }, { sign: "\u25B8", f: "<b>When</b> works just as well as <b>if</b> here" }],
         examples: ["If you heat ice, it melts.", "If the build fails, the pipeline stops.", "When I drink coffee at night, I can't sleep."]
       },
 
       {
-        section: "conditionals", eyebrow: "Type 1", title: "First Conditional",
+        section: "grammar", group: "Conditionals", eyebrow: "Type 1", title: "First Conditional",
         use: "A real, likely future possibility and its consequence.",
         patterns: [{ sign: "\u25B8", f: "<b>If</b> + present simple, <b>will</b> + V(bare)" }, { sign: "\u25B8", f: "Swap <b>will</b> for <b>may / might / can / should / must</b> to change certainty" }],
         examples: ["If it rains, we'll cancel the trip.", "If you push that branch, the tests will run.", "If she calls, tell her I'm out. <i>(imperative result)</i>", "If you finish early, you can leave."],
@@ -224,7 +208,7 @@ const ENTRIES = [
       },
 
       {
-        section: "conditionals", eyebrow: "Type 2", title: "Second Conditional",
+        section: "grammar", group: "Conditionals", eyebrow: "Type 2", title: "Second Conditional",
         use: "An unreal or unlikely present situation — imagining, hypothesising, giving advice.",
         patterns: [{ sign: "\u25B8", f: "<b>If</b> + past simple, <b>would</b> + V(bare)" }, { sign: "\u25B8", f: "Advice frame: <b>If I were you, I would</b> \u2026" }],
         examples: ["If I had more time, I would learn the guitar.", "If I were you, I'd take the offer.", "What would you do if you won the lottery?", "If we hired one more engineer, we could ship faster."],
@@ -232,7 +216,7 @@ const ENTRIES = [
       },
 
       {
-        section: "conditionals", eyebrow: "Type 3", title: "Third Conditional",
+        section: "grammar", group: "Conditionals", eyebrow: "Type 3", title: "Third Conditional",
         use: "An imagined past — something that did not happen, and its imagined result. Regret, blame, relief.",
         patterns: [{ sign: "\u25B8", f: "<b>If</b> + had + V3, <b>would have</b> + V3" }, { sign: "\u25B8", f: "Formal inversion: <b>Had</b> I known, I would have \u2026" }],
         examples: ["If I had studied harder, I would have passed.", "If we had left earlier, we wouldn't have missed the flight.", "She would have called if she had known.", "Had I known it was urgent, I'd have replied sooner."],
@@ -240,7 +224,7 @@ const ENTRIES = [
       },
 
       {
-        section: "conditionals", eyebrow: "Mixed", title: "Mixed Conditionals",
+        section: "grammar", group: "Conditionals", eyebrow: "Mixed", title: "Mixed Conditionals",
         use: "When the if-clause and the result belong to different times. Two combinations do almost all the work.",
         patterns: [
           { sign: "3\u21922", f: "<b>If</b> + had + V3, <b>would</b> + V &nbsp;\u2014 past cause, present result" },
@@ -250,7 +234,7 @@ const ENTRIES = [
       },
 
       {
-        section: "conditionals", eyebrow: "Related", title: "Wish / If only",
+        section: "grammar", group: "Conditionals", eyebrow: "Related", title: "Wish / If only",
         use: "Regret and desire. The tense goes one step further back than the time you mean.",
         patterns: [
           { sign: "now", f: "<b>wish</b> + past simple &nbsp;\u2014 about the present" },
@@ -262,7 +246,7 @@ const ENTRIES = [
       },
 
       {
-        section: "conditionals", eyebrow: "Related", title: "Unless, in case, as long as",
+        section: "grammar", group: "Conditionals", eyebrow: "Related", title: "Unless, in case, as long as",
         use: "Other ways to set a condition, each with its own logic.",
         patterns: [
           { sign: "\u2260", f: "<b>unless</b> = if not \u2014 the exception that stops the result" },
@@ -275,7 +259,7 @@ const ENTRIES = [
 
       /* --------------------------- PATTERNS --------------------------- */
       {
-        section: "patterns", group: "Core structures", eyebrow: "Voice", title: "The Passive",
+        section: "grammar", group: "Patterns · Core structures", eyebrow: "Voice", title: "The Passive",
         use: "Move the focus onto the thing affected, or leave out who did it because it's unknown or unimportant.",
         patterns: [
           { sign: "\u25B8", f: "Object + <b>be</b> (in the original tense) + V3 (+ <b>by</b> + agent)" },
@@ -286,7 +270,7 @@ const ENTRIES = [
       },
 
       {
-        section: "patterns", group: "Core structures", eyebrow: "Reporting", title: "Reported Speech",
+        section: "grammar", group: "Patterns · Core structures", eyebrow: "Reporting", title: "Reported Speech",
         use: "Telling someone what another person said. The tense usually shifts one step back.",
         patterns: [
           { sign: "\u2193", f: "present \u2192 past &nbsp;\u2022&nbsp; past \u2192 past perfect &nbsp;\u2022&nbsp; will \u2192 would &nbsp;\u2022&nbsp; can \u2192 could" },
@@ -299,7 +283,7 @@ const ENTRIES = [
       },
 
       {
-        section: "patterns", group: "Core structures", eyebrow: "Questions", title: "Question formation",
+        section: "grammar", group: "Patterns · Core structures", eyebrow: "Questions", title: "Question formation",
         use: "English questions need an auxiliary verb, and it moves in front of the subject.",
         patterns: [
           { sign: "y/n", f: "<b>Aux</b> + S + V ? &nbsp;\u2014 Do / Does / Did / Is / Are / Have / Will / Can" },
@@ -312,7 +296,7 @@ const ENTRIES = [
       },
 
       {
-        section: "patterns", group: "Core structures", eyebrow: "Clauses", title: "Relative clauses",
+        section: "grammar", group: "Patterns · Core structures", eyebrow: "Clauses", title: "Relative clauses",
         use: "Add information about a noun. Whether you need commas changes the meaning.",
         patterns: [
           { sign: "who", f: "people &nbsp;\u2022&nbsp; <b>which</b> things &nbsp;\u2022&nbsp; <b>that</b> either &nbsp;\u2022&nbsp; <b>whose</b> possession &nbsp;\u2022&nbsp; <b>where</b> places" },
@@ -324,7 +308,7 @@ const ENTRIES = [
       },
 
       {
-        section: "patterns", group: "Verb patterns", eyebrow: "Verb + verb", title: "Gerund or infinitive",
+        section: "grammar", group: "Patterns · Verb patterns", eyebrow: "Verb + verb", title: "Gerund or infinitive",
         use: "When one verb follows another, the first verb decides the form of the second. This is memorised, not derived.",
         patterns: [
           { sign: "-ing", f: "enjoy, avoid, finish, mind, suggest, keep, practise, consider, miss + <b>V-ing</b>" },
@@ -337,7 +321,7 @@ const ENTRIES = [
       },
 
       {
-        section: "patterns", group: "Verb patterns", eyebrow: "Modals", title: "Modal verbs",
+        section: "grammar", group: "Patterns · Verb patterns", eyebrow: "Modals", title: "Modal verbs",
         use: "One word that changes the whole attitude of the sentence: obligation, ability, permission, probability.",
         patterns: [
           { sign: "\u25B8", f: "S + <b>modal</b> + V(bare) &nbsp;\u2014 never <b>to</b>, never <b>-s</b>" },
@@ -350,7 +334,7 @@ const ENTRIES = [
       },
 
       {
-        section: "patterns", group: "Verb patterns", eyebrow: "Habits", title: "used to / be used to / get used to",
+        section: "grammar", group: "Patterns · Verb patterns", eyebrow: "Habits", title: "used to / be used to / get used to",
         use: "Three phrases that look alike and mean completely different things.",
         patterns: [
           { sign: "1", f: "<b>used to</b> + V(bare) = a past habit that stopped" },
@@ -362,7 +346,7 @@ const ENTRIES = [
       },
 
       {
-        section: "patterns", group: "Verb patterns", eyebrow: "Causatives", title: "Have / get something done",
+        section: "grammar", group: "Patterns · Verb patterns", eyebrow: "Causatives", title: "Have / get something done",
         use: "Someone else does the work for you. The focus is on the result, not the worker.",
         patterns: [
           { sign: "\u25B8", f: "S + <b>have/get</b> + <i>object</i> + <b>V3</b>" },
@@ -373,7 +357,7 @@ const ENTRIES = [
       },
 
       {
-        section: "patterns", group: "Comparison & degree", eyebrow: "Comparison", title: "Comparatives and superlatives",
+        section: "grammar", group: "Patterns · Comparison & degree", eyebrow: "Comparison", title: "Comparatives and superlatives",
         use: "More, less, most. The rule depends on how many syllables the adjective has.",
         patterns: [
           { sign: "1", f: "short adj + <b>-er / the -est</b> &nbsp;\u2014 tall \u2192 taller \u2192 the tallest" },
@@ -386,7 +370,7 @@ const ENTRIES = [
       },
 
       {
-        section: "patterns", group: "Comparison & degree", eyebrow: "Degree", title: "too / enough / so / such",
+        section: "grammar", group: "Patterns · Comparison & degree", eyebrow: "Degree", title: "too / enough / so / such",
         use: "Saying there is more than you want, or not as much as you need — and adding emphasis.",
         patterns: [
           { sign: "too", f: "<b>too</b> + adj (+ <b>for</b> sb) (+ <b>to</b> V) = more than is acceptable" },
@@ -399,7 +383,7 @@ const ENTRIES = [
       },
 
       {
-        section: "patterns", group: "Nouns & determiners", eyebrow: "Articles", title: "a / an / the / zero",
+        section: "grammar", group: "Patterns · Nouns & determiners", eyebrow: "Articles", title: "a / an / the / zero",
         use: "The single hardest thing for learners whose language has no articles. Two questions decide it.",
         patterns: [
           { sign: "1", f: "Is it specific for the listener? \u2192 <b>the</b>" },
@@ -412,7 +396,7 @@ const ENTRIES = [
       },
 
       {
-        section: "patterns", group: "Nouns & determiners", eyebrow: "Quantity", title: "Countable and uncountable",
+        section: "grammar", group: "Patterns · Nouns & determiners", eyebrow: "Quantity", title: "Countable and uncountable",
         use: "Whether a noun can be counted decides which quantity words you can use with it.",
         patterns: [
           { sign: "C", f: "<b>many / few / a few / a number of</b> + plural countable" },
@@ -425,7 +409,7 @@ const ENTRIES = [
       },
 
       {
-        section: "patterns", group: "Nouns & determiners", eyebrow: "Existence", title: "There is / There are",
+        section: "grammar", group: "Patterns · Nouns & determiners", eyebrow: "Existence", title: "There is / There are",
         use: "Introducing that something exists. The verb agrees with the noun that comes after it.",
         patterns: [
           { sign: "+", f: "<b>There is</b> + singular/uncountable &nbsp;\u2022&nbsp; <b>There are</b> + plural" },
@@ -436,7 +420,7 @@ const ENTRIES = [
       },
 
       {
-        section: "patterns", group: "Joining ideas", eyebrow: "Connectors", title: "Linking words",
+        section: "grammar", group: "Patterns · Joining ideas", eyebrow: "Connectors", title: "Linking words",
         use: "The joints of a paragraph. Choosing the right one shows the reader how your ideas relate.",
         patterns: [
           { sign: "+", f: "adding: <b>moreover, in addition, besides, furthermore</b>" },
@@ -449,176 +433,13 @@ const ENTRIES = [
       },
 
       {
-        section: "patterns", group: "Joining ideas", eyebrow: "Word order", title: "Adjective order",
+        section: "grammar", group: "Patterns · Joining ideas", eyebrow: "Word order", title: "Adjective order",
         use: "Native speakers follow this order without knowing it. Break it and the sentence sounds wrong even though every word is right.",
         patterns: [{ sign: "\u25B8", f: "opinion \u2192 size \u2192 age \u2192 shape \u2192 colour \u2192 origin \u2192 material \u2192 purpose \u2192 <b>NOUN</b>" }],
         examples: ["a lovely little old round brown Italian leather riding boot", "a beautiful large wooden desk", "an ugly old plastic chair"],
         fixes: [{ bad: "a leather brown big bag", good: "a big brown leather bag" }]
       },
 
-      /* -------------------------- VOCABULARY -------------------------- */
-      {
-        section: "vocabulary", group: "Foundations", eyebrow: "Set 01", title: "Everyday verbs you'll use hourly",
-        use: "Learn these with the words that naturally follow them, not alone.",
-        terms: [
-          { t: "take", d: "take a break, take a shower, take a photo, take the bus, take care of" },
-          { t: "make", d: "make a decision, make a mistake, make dinner, make sure, make progress" },
-          { t: "do", d: "do the dishes, do homework, do research, do business, do your best" },
-          { t: "get", d: "get up, get home, get tired, get a job, get in touch" },
-          { t: "have", d: "have breakfast, have a look, have a meeting, have fun, have time" },
-          { t: "go", d: "go home, go shopping, go for a walk, go wrong, go through" }
-        ],
-        examples: ["Make vs do: you <i>make</i> a decision but <i>do</i> a task. There is no rule — collect the pairs."]
-      },
-
-      {
-        section: "vocabulary", group: "Foundations", eyebrow: "Set 02", title: "Confusing pairs",
-        use: "Words learners mix up constantly. Fix these and your English immediately sounds more careful.",
-        terms: [
-          { t: "say / tell", d: "say something; tell someone something.", ex: "He said hello. He told me the news." },
-          { t: "lend / borrow", d: "lend = give out; borrow = take in.", ex: "Can you lend me $10? I want to borrow your charger." },
-          { t: "bring / take", d: "bring = toward the speaker; take = away.", ex: "Bring it here. Take it with you." },
-          { t: "remember / remind", d: "you remember; something reminds you.", ex: "Remind me to call her." },
-          { t: "affect / effect", d: "affect = verb; effect = noun.", ex: "It affected sales. It had an effect." },
-          { t: "fun / funny", d: "fun = enjoyable; funny = makes you laugh (or strange).", ex: "The party was fun. The joke was funny." },
-          { t: "boring / bored", d: "-ing describes the thing; -ed describes the person.", ex: "The lecture was boring, so I was bored." },
-          { t: "since / for", d: "since + a point in time; for + a duration.", ex: "since Monday / for three days" }
-        ]
-      },
-
-      {
-        section: "vocabulary", group: "Working English", eyebrow: "Set 03", title: "Work and meetings",
-        use: "Phrases that carry most professional conversations.",
-        terms: [
-          { t: "follow up", d: "contact again about something.", ex: "I'll follow up with the client tomorrow." },
-          { t: "reach out", d: "make first contact.", ex: "Feel free to reach out if anything is unclear." },
-          { t: "circle back", d: "return to a topic later.", ex: "Let's circle back to this after the demo." },
-          { t: "align on", d: "agree about.", ex: "We need to align on the deadline." },
-          { t: "a heads-up", d: "advance warning.", ex: "Thanks for the heads-up about the outage." },
-          { t: "take ownership of", d: "accept responsibility for.", ex: "She took ownership of the migration." },
-          { t: "bandwidth", d: "available time and capacity.", ex: "I don't have the bandwidth this week." },
-          { t: "blocker", d: "something stopping progress.", ex: "The API key is my only blocker." },
-          { t: "looping in", d: "adding someone to a conversation.", ex: "Looping in Mai, who owns this service." }
-        ]
-      },
-
-      {
-        section: "vocabulary", group: "Working English", eyebrow: "Set 04", title: "Sounding polite and indirect",
-        use: "Direct English can sound rude. These softeners do most of the diplomatic work.",
-        terms: [
-          { t: "Could you possibly \u2026", d: "a request that is easy to refuse.", ex: "Could you possibly review this today?" },
-          { t: "I was wondering if \u2026", d: "a very soft ask.", ex: "I was wondering if you had a moment." },
-          { t: "Would it be possible to \u2026", d: "formal request.", ex: "Would it be possible to move the meeting?" },
-          { t: "I'm afraid \u2026", d: "introduces bad news gently.", ex: "I'm afraid we can't make that deadline." },
-          { t: "That's a fair point, but \u2026", d: "disagreeing respectfully.", ex: "That's a fair point, but the cost worries me." },
-          { t: "It might be worth \u2026", d: "a suggestion without pressure.", ex: "It might be worth checking the logs first." },
-          { t: "Just to clarify \u2026", d: "asking again without blaming.", ex: "Just to clarify, do you need this by Friday?" }
-        ]
-      },
-
-      {
-        section: "vocabulary", group: "Expression", eyebrow: "Set 05", title: "Feelings beyond good and bad",
-        use: "Replace <i>very happy</i> and <i>very tired</i> with one precise word.",
-        terms: [
-          { t: "delighted", d: "very pleased.", ex: "I'm delighted to hear that." },
-          { t: "relieved", d: "glad a worry has ended.", ex: "I was relieved when the tests passed." },
-          { t: "frustrated", d: "annoyed at being blocked.", ex: "I'm frustrated with this bug." },
-          { t: "overwhelmed", d: "too much to handle.", ex: "I feel overwhelmed by the workload." },
-          { t: "exhausted", d: "extremely tired.", ex: "I'm exhausted after that deploy." },
-          { t: "anxious", d: "worried about something ahead.", ex: "She's anxious about the interview." },
-          { t: "grateful", d: "thankful.", ex: "I'm grateful for your help." },
-          { t: "confident", d: "sure of yourself.", ex: "He's confident about the launch." }
-        ]
-      },
-
-      {
-        section: "vocabulary", group: "Expression", eyebrow: "Set 06", title: "Phrasal verbs, high frequency",
-        use: "Verb + particle, meaning something new. Some can split around the object; some can't.",
-        terms: [
-          { t: "look up", d: "search for information. <i>separable</i>", ex: "Look it up in the docs." },
-          { t: "figure out", d: "solve or understand. <i>separable</i>", ex: "I figured out the problem." },
-          { t: "give up", d: "quit.", ex: "Don't give up now." },
-          { t: "put off", d: "postpone. <i>separable</i>", ex: "They put the meeting off again." },
-          { t: "run into", d: "meet by chance / encounter a problem.", ex: "I ran into an error." },
-          { t: "come up with", d: "invent, think of.", ex: "She came up with a better approach." },
-          { t: "turn down", d: "refuse, or lower. <i>separable</i>", ex: "He turned down the offer." },
-          { t: "get along with", d: "have a good relationship.", ex: "I get along with my team." },
-          { t: "sort out", d: "fix or organise. <i>separable</i>", ex: "I'll sort it out this afternoon." }
-        ],
-        fixes: [{ bad: "I looked up it.", good: "I looked it up. (pronouns go in the middle)" }]
-      },
-
-      /* ----------------------------- SLANG ---------------------------- */
-      {
-        section: "slang", eyebrow: "Register guide", title: "How to read the tags",
-        use: "Slang is fast, friendly, and easy to get wrong. Use the tag to decide where a phrase is safe.",
-        terms: [
-          { t: "CASUAL", d: "friends, group chats, games. Not in an email to a client." },
-          { t: "WORK-OK", d: "common in informal offices and Slack. Safe with colleagues." },
-          { t: "CAREFUL", d: "can sound rude, sarcastic, or too familiar depending on tone." }
-        ],
-        examples: ["Rule of thumb: understand all slang, but only produce what you've heard a colleague use first."]
-      },
-
-      {
-        section: "slang", eyebrow: "Everyday", title: "Daily conversation slang",
-        terms: [
-          { t: "hang out", reg: "work-ok", d: "spend time casually.", ex: "We hung out at the beach." },
-          { t: "grab a bite", reg: "work-ok", d: "eat something quick.", ex: "Want to grab a bite?" },
-          { t: "my bad", reg: "casual", d: "my mistake.", ex: "My bad, I sent the wrong file." },
-          { t: "no worries", reg: "work-ok", d: "it's fine / you're welcome.", ex: "No worries, take your time." },
-          { t: "I'm beat", reg: "casual", d: "I'm exhausted.", ex: "I'm beat — see you tomorrow." },
-          { t: "hit me up", reg: "casual", d: "contact me.", ex: "Hit me up when you land." },
-          { t: "a heads-up", reg: "work-ok", d: "a warning in advance.", ex: "Quick heads-up: the site is down." },
-          { t: "catch up", reg: "work-ok", d: "talk to update each other.", ex: "Let's catch up next week." }
-        ]
-      },
-
-      {
-        section: "slang", eyebrow: "Reactions", title: "Reacting like a native",
-        terms: [
-          { t: "No way!", reg: "casual", d: "disbelief or excitement.", ex: "No way, you got the job?" },
-          { t: "For real?", reg: "casual", d: "are you serious?", ex: "For real? That fast?" },
-          { t: "Fair enough.", reg: "work-ok", d: "I accept your reason.", ex: "Fair enough, let's do it your way." },
-          { t: "Makes sense.", reg: "work-ok", d: "I understand and agree.", ex: "Ah, makes sense." },
-          { t: "I'm not gonna lie \u2026", reg: "casual", d: "honestly.", ex: "Not gonna lie, that was hard." },
-          { t: "It is what it is.", reg: "casual", d: "accepting something you can't change.", ex: "We lost the client. It is what it is." },
-          { t: "That's rough.", reg: "casual", d: "sympathy.", ex: "Your flight got cancelled? That's rough." },
-          { t: "Good call.", reg: "work-ok", d: "a good decision.", ex: "Good call on rolling back." }
-        ]
-      },
-
-      {
-        section: "slang", eyebrow: "Idioms", title: "Idioms worth knowing",
-        use: "The meaning is not the sum of the words. Learn them whole.",
-        terms: [
-          { t: "a piece of cake", d: "very easy.", ex: "The exam was a piece of cake." },
-          { t: "hit the nail on the head", d: "be exactly right.", ex: "You hit the nail on the head." },
-          { t: "under the weather", d: "slightly ill.", ex: "I'm a bit under the weather today." },
-          { t: "call it a day", reg: "work-ok", d: "stop working.", ex: "It's late — let's call it a day." },
-          { t: "on the same page", reg: "work-ok", d: "in agreement.", ex: "Are we on the same page?" },
-          { t: "bite off more than you can chew", d: "take on too much.", ex: "I bit off more than I could chew this sprint." },
-          { t: "the ball is in your court", reg: "work-ok", d: "it's your turn to act.", ex: "I've replied — the ball's in their court." },
-          { t: "cut corners", d: "do something cheaply or carelessly.", ex: "Don't cut corners on testing." }
-        ]
-      },
-
-      {
-        section: "slang", eyebrow: "Texting", title: "Chat and internet shorthand",
-        use: "Read-only for most situations — recognise them, use them only with friends.",
-        terms: [
-          { t: "btw", d: "by the way" },
-          { t: "idk", d: "I don't know" },
-          { t: "imo / imho", d: "in my (humble) opinion" },
-          { t: "tbh", d: "to be honest" },
-          { t: "asap", reg: "work-ok", d: "as soon as possible" },
-          { t: "fyi", reg: "work-ok", d: "for your information" },
-          { t: "lmk", reg: "work-ok", d: "let me know" },
-          { t: "nvm", d: "never mind" },
-          { t: "ttyl", d: "talk to you later" },
-          { t: "wanna / gonna / gotta", reg: "careful", d: "want to / going to / have got to \u2014 spoken forms; don't write them formally." }
-        ]
-      },
 
       /* -------------------------- PRONUNCIATION ------------------------ */
       {

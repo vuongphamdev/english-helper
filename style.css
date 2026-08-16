@@ -97,7 +97,6 @@ body {
   z-index: 30;
   background: var(--paper);
   padding: 14px 0 12px;
-  border-bottom: 1px solid var(--rule);
 }
 
 .searchwrap {
@@ -204,25 +203,42 @@ body {
   border-color: var(--indigo)
 }
 
-/* ---------- layout: main column + thumb index ---------- */
+/* ---------- layout ---------- */
 .layout {
-  display: grid;
-  gap: 0 34px;
-  grid-template-columns: minmax(0, 1fr) 172px;
-  grid-template-areas: "main tabs";
-  align-items: start;
+  max-width: 100%;
 }
 
 main {
-  grid-area: main;
-  min-width: 0
+  min-width: 0;
+  max-width: 860px;
+  position: relative;
+  z-index: 1
 }
 
 nav {
-  grid-area: tabs;
-  position: sticky;
-  top: 98px;
-  padding-top: 34px
+  display: none
+}
+
+/* desktop: nav becomes a sidebar */
+@media (min-width:861px) {
+  .searchbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 172px;
+    gap: 0 34px;
+    align-items: start;
+  }
+
+  .searchbar > .searchwrap,
+  .searchbar > .statusline {
+    grid-column: 1;
+  }
+
+  nav {
+    display: block;
+    grid-column: 2;
+    grid-row: 1 / 4;
+    padding-top: 8px;
+  }
 }
 
 /* thumb tabs, cut into the edge of the book */
@@ -670,15 +686,40 @@ mark {
   max-width: 52ch
 }
 
+.group {
+  margin: 26px 0 0;
+}
+
 .grouphead {
   font-family: var(--mono);
   font-size: 10.5px;
   letter-spacing: .13em;
   text-transform: uppercase;
   color: var(--muted);
-  margin: 26px 0 2px;
-  padding-bottom: 6px;
+  padding: 0 0 6px;
   border-bottom: 1px solid var(--rule);
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.grouphead::-webkit-details-marker { display: none; }
+
+.grouphead::before {
+  content: "▸";
+  font-size: 11px;
+  transition: transform .15s ease;
+}
+
+.group[open] > .grouphead::before {
+  transform: rotate(90deg);
+}
+
+.grouphead .n {
+  font-size: 9.5px;
+  opacity: .6;
 }
 
 footer {
@@ -704,24 +745,59 @@ footer code {
 
 @media (max-width:860px) {
   body {
-    font-size: 16px
+    font-size: 15px
+  }
+
+  .masthead {
+    padding: 24px 0 16px
+  }
+
+  .masthead .headword {
+    font-size: 36px
+  }
+
+  .masthead .pron {
+    font-size: 14px;
+    margin: 6px 0 0
+  }
+
+  .masthead .sense {
+    display: none
+  }
+
+  .masthead .meta {
+    margin-top: 10px;
+    font-size: 10px;
+    gap: 6px 12px
+  }
+
+  .searchbar {
+    padding: 8px 0 6px
+  }
+
+  .searchwrap {
+    height: 42px;
+    padding: 0 10px
+  }
+
+  #q {
+    font-size: 15px
+  }
+
+  .statusline {
+    margin-top: 6px;
+    font-size: 10px
   }
 
   .layout {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: "tabs" "main";
-    gap: 0
+    display: block
   }
 
   nav {
-    position: sticky;
-    top: 96px;
-    padding: 10px 0;
-    background: var(--paper);
     display: flex;
-    gap: 6px;
+    gap: 5px;
+    padding: 6px 0 0;
     overflow-x: auto;
-    border-bottom: 1px solid var(--rule);
     scrollbar-width: none;
   }
 
@@ -735,22 +811,36 @@ footer code {
     margin: 0;
     border: 1px solid var(--rule);
     border-radius: 3px;
-    padding: 9px 12px
+    padding: 7px 10px;
+    font-size: 10px
   }
 
   .tab[aria-selected="true"] {
     border-color: var(--ink);
     box-shadow: inset 0 -3px 0 var(--pen);
-    padding-left: 12px
+    padding-left: 10px
   }
 
   .tab .n {
     display: none
   }
 
+  .sectionhead {
+    padding: 20px 0 6px
+  }
+
+  .sectionhead h2 {
+    font-size: 22px
+  }
+
+  .sectionhead p {
+    font-size: 14px
+  }
+
   .entry {
-    padding: 18px 16px;
-    border-left-width: 3px
+    padding: 14px 12px;
+    border-left-width: 3px;
+    margin: 10px 0
   }
 
   dl.terms>div {

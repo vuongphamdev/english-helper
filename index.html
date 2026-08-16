@@ -51,20 +51,13 @@
           <option value="za">Z – A</option>
         </select>
       </div>
+      <nav id="tabs" role="tablist" aria-label="Sections"></nav>
     </div>
 
     <div class="layout">
-      <nav id="tabs" role="tablist" aria-label="Sections"></nav>
       <main id="main"></main>
     </div>
 
-    <footer>
-      Add your own: open <code>data.js</code>, find <code>ENTRIES</code>, copy any object, change the words.<br>
-      Fields: <code>section</code> <code>title</code> <code>ipa</code> <code>eyebrow</code> <code>use</code>
-      <code>patterns[]</code> <code>signals[]</code> <code>examples[]</code> <code>fixes[]</code> <code>terms[]</code>
-      <code>group</code><br>
-      Everything you type is searchable automatically. No build step, no server — just save and reload.
-    </footer>
   </div>
 
   <script src="data.js"></script>
@@ -333,14 +326,27 @@
         total += list.length;
         html += '<section class="sectionhead"><h2>' + (query ? sec.label : sec.title) + '</h2>' +
           (query ? '' : '<p>' + sec.blurb + '</p>') + '</section>';
-        let lastGroup = null;
-        list.forEach(e => {
-          if (!query && e.group && e.group !== lastGroup) {
-            html += '<div class="grouphead">' + e.group + '</div>';
-            lastGroup = e.group;
-          }
-          html += entryHTML(e);
-        });
+
+        if (query) {
+          list.forEach(e => html += entryHTML(e));
+        } else {
+          // Group entries, then wrap each group in a collapsible <details>
+          const groups = [];
+          let cur = null;
+          list.forEach(e => {
+            const g = e.group || "";
+            if (!cur || cur.name !== g) { cur = { name: g, items: [] }; groups.push(cur); }
+            cur.items.push(e);
+          });
+          groups.forEach(g => {
+            if (g.name) {
+              html += '<details class="group"><summary class="grouphead">' +
+                g.name + '<span class="n">' + g.items.length + '</span></summary>';
+            }
+            g.items.forEach(e => html += entryHTML(e));
+            if (g.name) html += '</details>';
+          });
+        }
       });
 
       if (!query && ENTRIES.filter(e => e.section === active).length === 0) {

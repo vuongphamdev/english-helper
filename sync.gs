@@ -61,6 +61,8 @@ function onOpen() {
     .addItem("Repair audio links", "fixAudioLinks")
     .addItem("Set save key", "setSaveKey")
     .addItem("Fill as I type (install trigger)", "installTrigger")
+    .addSeparator()
+    .addItem("Dump starter data", "dumpStarterData")
     .addToUi();
 }
 
@@ -464,6 +466,221 @@ function sheet_() {
       'No sheet named "' + SHEET_NAME + '". Run Set up sheet first.',
     );
   return sh;
+}
+
+/* ================================================================== */
+/*  Starter data                                                      */
+/* ================================================================== */
+
+/**
+ * Populates the sheet with ~150 curated rows covering vocabulary, slang,
+ * collocations, and useful sentences. IPA, Vietnamese, and Audio are left
+ * blank so that enrichment can fill them in automatically afterwards.
+ */
+function dumpStarterData() {
+  var sh = sheet_();
+  var lastRow = sh.getLastRow();
+
+  if (lastRow > 1) {
+    var ui = SpreadsheetApp.getUi();
+    var answer = ui.alert(
+      "Starter data",
+      "This will add starter data below your existing rows. Continue?",
+      ui.ButtonSet.YES_NO,
+    );
+    if (answer !== ui.Button.YES) return;
+  }
+
+  var now = new Date();
+  // Schema: [Term, Type, POS, IPA, Meaning, Vietnamese, Example, Note, Tags, Added, Audio]
+  //          POS, IPA, Vietnamese, Audio left blank — enrichment fills them.
+  var rows = [
+    // ── Vocab: everyday verbs with collocations (tag: core) ────────
+    ["take", "vocab", "", "", "to move something from one place/state to another", "", "Take a break, take responsibility, take notes.", "", "core", now, ""],
+    ["make", "vocab", "", "", "to create or produce something", "", "Make a decision, make progress, make sense.", "", "core", now, ""],
+    ["get", "vocab", "", "", "to obtain, become, or arrive", "", "Get started, get stuck, get the hang of.", "", "core", now, ""],
+    ["keep", "vocab", "", "", "to continue or retain", "", "Keep track, keep in mind, keep up with.", "", "core", now, ""],
+    ["run", "vocab", "", "", "to operate or move quickly", "", "Run a test, run into problems, run out of time.", "", "core", now, ""],
+    ["set", "vocab", "", "", "to put in place or establish", "", "Set up, set a deadline, set expectations.", "", "core", now, ""],
+    ["break", "vocab", "", "", "to separate into parts or pause", "", "Break down, break something, take a break.", "", "core", now, ""],
+    ["hold", "vocab", "", "", "to keep or conduct", "", "Hold a meeting, hold on, hold off.", "", "core", now, ""],
+    ["pull", "vocab", "", "", "to draw toward oneself", "", "Pull a request, pull together, pull off.", "", "core", now, ""],
+    ["push", "vocab", "", "", "to press forward or exert force", "", "Push back, push through, push a commit.", "", "core", now, ""],
+
+    // ── Vocab: confusing pairs (tag: confusing) ────────────────────
+    ["affect", "vocab", "", "", "verb — to have an influence on", "", "The bug affected users.", "", "confusing", now, ""],
+    ["effect", "vocab", "", "", "noun — a result or outcome", "", "It had a big effect on performance.", "", "confusing", now, ""],
+    ["advice", "vocab", "", "", "noun — a recommendation", "", "I need advice on this design.", "", "confusing", now, ""],
+    ["advise", "vocab", "", "", "verb — to give a recommendation", "", "Can you advise me on the architecture?", "", "confusing", now, ""],
+    ["lose", "vocab", "", "", "verb — to be unable to find or keep", "", "Don't lose the API key.", "", "confusing", now, ""],
+    ["loose", "vocab", "", "", "adjective — not tight", "", "The cable connection is loose.", "", "confusing", now, ""],
+    ["quite", "vocab", "", "", "adverb — fairly, to a degree", "", "It's quite quiet here.", "", "confusing", now, ""],
+    ["quiet", "vocab", "", "", "adjective — making little noise", "", "The office is very quiet today.", "", "confusing", now, ""],
+    ["principal", "vocab", "", "", "adjective/noun — main; headmaster", "", "The principal reason is performance.", "", "confusing", now, ""],
+    ["principle", "vocab", "", "", "noun — a fundamental rule or belief", "", "The principal principle is simplicity.", "", "confusing", now, ""],
+    ["complement", "vocab", "", "", "verb/noun — to complete or make whole", "", "These tools complement each other.", "", "confusing", now, ""],
+    ["compliment", "vocab", "", "", "verb/noun — to praise", "", "She complimented the clean code.", "", "confusing", now, ""],
+    ["farther", "vocab", "", "", "adverb — at a greater physical distance", "", "The server room is farther down the hall.", "", "confusing", now, ""],
+    ["further", "vocab", "", "", "adverb — additional, to a greater extent", "", "Further details are needed before we deploy.", "", "confusing", now, ""],
+    ["lay", "vocab", "", "", "verb — to put down (needs an object)", "", "Lay the book down on the table.", "", "confusing", now, ""],
+    ["lie", "vocab", "", "", "verb — to recline (no object needed)", "", "I'll lie here and rest for a bit.", "", "confusing", now, ""],
+
+    // ── Vocab: feelings (tag: feelings) ────────────────────────────
+    ["overwhelmed", "vocab", "", "", "feeling that there is too much to handle", "", "I'm overwhelmed by the backlog.", "", "feelings", now, ""],
+    ["frustrated", "vocab", "", "", "annoyed at being unable to change something", "", "I'm frustrated with this bug.", "", "feelings", now, ""],
+    ["relieved", "vocab", "", "", "glad that a worry or problem has ended", "", "I was relieved the deploy went fine.", "", "feelings", now, ""],
+    ["anxious", "vocab", "", "", "worried or uneasy about what may happen", "", "She's anxious about the demo.", "", "feelings", now, ""],
+    ["thrilled", "vocab", "", "", "extremely pleased and excited", "", "I'm thrilled to join the team.", "", "feelings", now, ""],
+    ["exhausted", "vocab", "", "", "extremely tired", "", "I'm exhausted after that sprint.", "", "feelings", now, ""],
+    ["grateful", "vocab", "", "", "feeling thankful and appreciative", "", "I'm grateful for the review.", "", "feelings", now, ""],
+    ["confident", "vocab", "", "", "sure of one's abilities or outcome", "", "He's confident about the architecture.", "", "feelings", now, ""],
+
+    // ── Vocab: work vocabulary (tag: work) ─────────────────────────
+    ["bandwidth", "vocab", "", "", "available time or capacity", "", "I don't have bandwidth this week.", "", "work", now, ""],
+    ["blocker", "vocab", "", "", "something that stops progress", "", "The missing API key is my blocker.", "", "work", now, ""],
+    ["deliverable", "vocab", "", "", "a thing that must be provided or completed", "", "What are the deliverables for this sprint?", "", "work", now, ""],
+    ["stakeholder", "vocab", "", "", "a person with an interest in the project", "", "We need stakeholder approval.", "", "work", now, ""],
+    ["leverage", "vocab", "", "", "to use something to maximum advantage", "", "Let's leverage the existing API.", "", "work", now, ""],
+    ["scalable", "vocab", "", "", "able to grow or be made larger", "", "We need a scalable solution.", "", "work", now, ""],
+    ["bottleneck", "vocab", "", "", "the slowest point that limits throughput", "", "The database is the bottleneck.", "", "work", now, ""],
+    ["trade-off", "vocab", "", "", "a sacrifice of one thing for another", "", "There's a trade-off between speed and quality.", "", "work", now, ""],
+    ["iterate", "vocab", "", "", "to repeat a process to improve it", "", "Let's iterate on the design.", "", "work", now, ""],
+    ["onboard", "vocab", "", "", "to bring a new person up to speed", "", "We need to onboard the new hire.", "", "work", now, ""],
+
+    // ── Vocab: polite phrases (tag: polite) ────────────────────────
+    ["Could you possibly…", "vocab", "", "", "a soft, polite request", "", "Could you possibly review my PR today?", "", "polite", now, ""],
+    ["I was wondering if…", "vocab", "", "", "a very indirect way to ask something", "", "I was wondering if you had time for a quick call.", "", "polite", now, ""],
+    ["Would it be possible to…", "vocab", "", "", "a formal request", "", "Would it be possible to extend the deadline?", "", "polite", now, ""],
+    ["I'm afraid…", "vocab", "", "", "introduces bad news softly", "", "I'm afraid we won't make the release date.", "", "polite", now, ""],
+    ["That's a fair point, but…", "vocab", "", "", "polite way to disagree", "", "That's a fair point, but the data says otherwise.", "", "polite", now, ""],
+    ["Just to clarify…", "vocab", "", "", "asking for clarity without assigning blame", "", "Just to clarify, are we targeting v2 or v3?", "", "polite", now, ""],
+    ["It might be worth…", "vocab", "", "", "a soft suggestion", "", "It might be worth adding a cache layer.", "", "polite", now, ""],
+
+    // ── Slang: daily (tag: slang) ──────────────────────────────────
+    ["hang out", "slang", "", "", "to spend time casually with someone", "", "Want to hang out after work?", "work-ok", "slang", now, ""],
+    ["grab a bite", "slang", "", "", "to eat something quickly", "", "Let's grab a bite before the meeting.", "work-ok", "slang", now, ""],
+    ["my bad", "slang", "", "", "my mistake", "", "Oh, my bad — I sent the wrong link.", "casual", "slang", now, ""],
+    ["no worries", "slang", "", "", "it's fine, don't worry about it", "", "No worries, I'll fix it myself.", "work-ok", "slang", now, ""],
+    ["I'm beat", "slang", "", "", "I'm very tired", "", "I'm beat — heading home early.", "casual", "slang", now, ""],
+    ["hit me up", "slang", "", "", "contact me", "", "Hit me up if you need help.", "casual", "slang", now, ""],
+    ["catch up", "slang", "", "", "to talk and update each other", "", "Let's catch up over coffee.", "work-ok", "slang", now, ""],
+    ["chill", "slang", "", "", "to relax or calm down", "", "Let's just chill this weekend.", "casual", "slang", now, ""],
+    ["bail", "slang", "", "", "to leave or cancel plans", "", "Sorry, I have to bail on dinner tonight.", "casual", "slang", now, ""],
+    ["vibe", "slang", "", "", "a feeling or atmosphere", "", "The team has a good vibe.", "casual", "slang", now, ""],
+
+    // ── Slang: reactions ───────────────────────────────────────────
+    ["No way!", "slang", "", "", "expression of disbelief", "", "No way! That actually worked?", "casual", "slang", now, ""],
+    ["For real?", "slang", "", "", "are you serious?", "", "For real? They shipped it already?", "casual", "slang", now, ""],
+    ["Fair enough", "slang", "", "", "I accept that point", "", "Fair enough — let's try your approach.", "work-ok", "slang", now, ""],
+    ["Makes sense", "slang", "", "", "I understand and agree", "", "Makes sense — let's go with that.", "work-ok", "slang", now, ""],
+    ["Good call", "slang", "", "", "that was a good decision", "", "Good call on adding the retry logic.", "work-ok", "slang", now, ""],
+    ["That's rough", "slang", "", "", "expression of sympathy", "", "Three deploys in one day? That's rough.", "casual", "slang", now, ""],
+    ["Nailed it", "slang", "", "", "did it perfectly", "", "You nailed it — the demo was flawless.", "work-ok", "slang", now, ""],
+    ["Spot on", "slang", "", "", "exactly right", "", "Your estimate was spot on.", "work-ok", "slang", now, ""],
+
+    // ── Slang: idioms ──────────────────────────────────────────────
+    ["a piece of cake", "slang", "", "", "something very easy", "", "The migration was a piece of cake.", "idiom", "slang", now, ""],
+    ["hit the nail on the head", "slang", "", "", "to be exactly right about something", "", "You hit the nail on the head with that analysis.", "idiom", "slang", now, ""],
+    ["under the weather", "slang", "", "", "feeling slightly ill", "", "I'm a bit under the weather today.", "idiom", "slang", now, ""],
+    ["call it a day", "slang", "", "", "to stop working for the day", "", "Let's call it a day — we can finish tomorrow.", "idiom", "slang", now, ""],
+    ["on the same page", "slang", "", "", "in agreement, sharing the same understanding", "", "Let's make sure we're on the same page.", "idiom", "slang", now, ""],
+    ["the ball is in your court", "slang", "", "", "it is your turn to act or decide", "", "I've sent the proposal — the ball is in your court.", "idiom", "slang", now, ""],
+    ["cut corners", "slang", "", "", "to do something carelessly to save time", "", "Don't cut corners on testing.", "idiom", "slang", now, ""],
+    ["break the ice", "slang", "", "", "to start a conversation in an awkward situation", "", "He told a joke to break the ice.", "idiom", "slang", now, ""],
+    ["get the ball rolling", "slang", "", "", "to start something", "", "Let's get the ball rolling on the redesign.", "idiom", "slang", now, ""],
+    ["sleep on it", "slang", "", "", "to wait until tomorrow before deciding", "", "It's a big change — let me sleep on it.", "idiom", "slang", now, ""],
+
+    // ── Slang: internet shorthand ──────────────────────────────────
+    ["btw", "slang", "", "", "by the way", "", "Btw, the build is green now.", "text-only", "slang", now, ""],
+    ["idk", "slang", "", "", "I don't know", "", "Idk if that approach will scale.", "text-only", "slang", now, ""],
+    ["tbh", "slang", "", "", "to be honest", "", "Tbh, I prefer the first design.", "text-only", "slang", now, ""],
+    ["asap", "slang", "", "", "as soon as possible", "", "Can you fix this asap?", "text-only", "slang", now, ""],
+    ["fyi", "slang", "", "", "for your information", "", "Fyi, the endpoint changed.", "text-only", "slang", now, ""],
+    ["lmk", "slang", "", "", "let me know", "", "Lmk when the PR is ready.", "text-only", "slang", now, ""],
+    ["imo", "slang", "", "", "in my opinion", "", "Imo, we should refactor first.", "text-only", "slang", now, ""],
+
+    // ── Collocations: make/do/take/have (tag: core) ────────────────
+    ["make a decision", "collocation", "", "", "to decide", "", "We need to make a decision by Friday.", "", "core", now, ""],
+    ["make progress", "collocation", "", "", "to advance toward a goal", "", "The team is making progress on the migration.", "", "core", now, ""],
+    ["make an effort", "collocation", "", "", "to try hard", "", "Please make an effort to attend.", "", "core", now, ""],
+    ["make a mistake", "collocation", "", "", "to do something incorrectly", "", "Everyone makes mistakes — just fix it.", "", "core", now, ""],
+    ["do research", "collocation", "", "", "to investigate a topic", "", "I need to do some research before the meeting.", "", "core", now, ""],
+    ["do your best", "collocation", "", "", "to try as hard as you can", "", "Just do your best — that's all we ask.", "", "core", now, ""],
+    ["do someone a favour", "collocation", "", "", "to help someone out", "", "Could you do me a favour and review this?", "", "core", now, ""],
+    ["take a break", "collocation", "", "", "to pause and rest", "", "Let's take a break before the next session.", "", "core", now, ""],
+    ["take responsibility", "collocation", "", "", "to accept ownership", "", "I'll take responsibility for the outage.", "", "core", now, ""],
+    ["take notes", "collocation", "", "", "to write down key points", "", "Can someone take notes during the meeting?", "", "core", now, ""],
+    ["take turns", "collocation", "", "", "to alternate doing something", "", "Let's take turns presenting.", "", "core", now, ""],
+    ["have a look", "collocation", "", "", "to examine or inspect", "", "Can you have a look at this error?", "", "core", now, ""],
+    ["have a meeting", "collocation", "", "", "to attend or hold a meeting", "", "We have a meeting at 3 pm.", "", "core", now, ""],
+    ["have a go", "collocation", "", "", "to try something", "", "Let me have a go at fixing it.", "", "core", now, ""],
+
+    // ── Collocations: adjective + noun (tag: natural) ──────────────
+    ["heavy rain", "collocation", "", "", "intense rainfall", "", "The event was cancelled due to heavy rain.", "", "natural", now, ""],
+    ["strong coffee", "collocation", "", "", "coffee with an intense flavour", "", "I need a strong coffee this morning.", "", "natural", now, ""],
+    ["high priority", "collocation", "", "", "something very important and urgent", "", "This bug is high priority.", "", "natural", now, ""],
+    ["sharp increase", "collocation", "", "", "a sudden and large rise", "", "There was a sharp increase in traffic.", "", "natural", now, ""],
+    ["deep understanding", "collocation", "", "", "thorough and comprehensive knowledge", "", "She has a deep understanding of the codebase.", "", "natural", now, ""],
+    ["rough estimate", "collocation", "", "", "an approximate, imprecise calculation", "", "A rough estimate is about two weeks.", "", "natural", now, ""],
+    ["steep learning curve", "collocation", "", "", "something difficult to learn at first", "", "Kubernetes has a steep learning curve.", "", "natural", now, ""],
+    ["tight deadline", "collocation", "", "", "a deadline with very little spare time", "", "We're working against a tight deadline.", "", "natural", now, ""],
+    ["broad experience", "collocation", "", "", "wide-ranging experience across many areas", "", "She has broad experience in backend systems.", "", "natural", now, ""],
+    ["narrow scope", "collocation", "", "", "a limited or focused range", "", "Keep the PR to a narrow scope.", "", "natural", now, ""],
+
+    // ── Collocations: verb + noun (tag: business) ──────────────────
+    ["raise a concern", "collocation", "", "", "to bring up a worry or issue", "", "I'd like to raise a concern about the timeline.", "", "business", now, ""],
+    ["meet a deadline", "collocation", "", "", "to finish before the due date", "", "We managed to meet the deadline.", "", "business", now, ""],
+    ["run a test", "collocation", "", "", "to execute a test", "", "Let me run a test before merging.", "", "business", now, ""],
+    ["fix a bug", "collocation", "", "", "to resolve a software defect", "", "I spent the morning fixing a bug.", "", "business", now, ""],
+    ["ship a feature", "collocation", "", "", "to release a feature to users", "", "We shipped the feature on Tuesday.", "", "business", now, ""],
+    ["close a deal", "collocation", "", "", "to finalise an agreement", "", "Sales just closed a deal with the enterprise client.", "", "business", now, ""],
+    ["address an issue", "collocation", "", "", "to deal with a problem", "", "We need to address this issue before launch.", "", "business", now, ""],
+    ["launch a product", "collocation", "", "", "to release a product publicly", "", "They plan to launch the product next quarter.", "", "business", now, ""],
+    ["conduct a review", "collocation", "", "", "to carry out a formal examination", "", "Let's conduct a review of the architecture.", "", "business", now, ""],
+    ["draft a proposal", "collocation", "", "", "to write an initial version of a proposal", "", "I'll draft a proposal and share it tomorrow.", "", "business", now, ""],
+
+    // ── Collocations: adverb combos (tag: fluency) ─────────────────
+    ["highly recommend", "collocation", "", "", "to strongly suggest something", "", "I highly recommend this library.", "", "fluency", now, ""],
+    ["strongly suggest", "collocation", "", "", "to advise with emphasis", "", "I strongly suggest we add tests first.", "", "fluency", now, ""],
+    ["deeply appreciate", "collocation", "", "", "to be very thankful", "", "I deeply appreciate your help on this.", "", "fluency", now, ""],
+    ["fully understand", "collocation", "", "", "to comprehend completely", "", "I fully understand the trade-offs.", "", "fluency", now, ""],
+    ["seriously consider", "collocation", "", "", "to think about something carefully", "", "We should seriously consider a rewrite.", "", "fluency", now, ""],
+    ["absolutely agree", "collocation", "", "", "to agree completely", "", "I absolutely agree with that assessment.", "", "fluency", now, ""],
+
+    // ── Sentences (tag: template) ──────────────────────────────────
+    ["I just wanted to follow up on our earlier conversation.", "sentence", "", "", "polite follow-up opener", "", "", "", "template", now, ""],
+    ["Could you walk me through how this works?", "sentence", "", "", "asking someone to explain step by step", "", "", "", "template", now, ""],
+    ["Let me know if there's anything I can help with.", "sentence", "", "", "offering assistance", "", "", "", "template", now, ""],
+    ["I'll circle back once I have more details.", "sentence", "", "", "promising to return with information", "", "", "", "template", now, ""],
+    ["That's a good point — I hadn't thought of it that way.", "sentence", "", "", "acknowledging someone's insight", "", "", "", "template", now, ""],
+    ["I think we're on the same page now.", "sentence", "", "", "confirming mutual understanding", "", "", "", "template", now, ""],
+    ["Can we take a step back and look at the bigger picture?", "sentence", "", "", "suggesting a broader perspective", "", "", "", "template", now, ""],
+    ["I'd love to get your thoughts on this.", "sentence", "", "", "inviting feedback", "", "", "", "template", now, ""],
+    ["Let's table this for now and revisit it next week.", "sentence", "", "", "postponing a topic politely", "", "", "", "template", now, ""],
+    ["Just to be clear, are we aligned on the next steps?", "sentence", "", "", "confirming agreement on actions", "", "", "", "template", now, ""],
+    ["I appreciate you bringing this up.", "sentence", "", "", "thanking someone for raising a point", "", "", "", "template", now, ""],
+    ["There might be a better way to approach this.", "sentence", "", "", "soft suggestion of an alternative", "", "", "", "template", now, ""],
+    ["I'll take the action item and get back to you by Friday.", "sentence", "", "", "committing to a task with a deadline", "", "", "", "template", now, ""],
+    ["The short answer is yes, but let me explain the details.", "sentence", "", "", "answering then elaborating", "", "", "", "template", now, ""],
+    ["I don't have a strong opinion either way.", "sentence", "", "", "expressing neutrality on a decision", "", "", "", "template", now, ""],
+    ["Would it make sense to loop in someone from the other team?", "sentence", "", "", "suggesting cross-team collaboration", "", "", "", "template", now, ""],
+    ["I want to make sure I'm not missing anything.", "sentence", "", "", "double-checking for completeness", "", "", "", "template", now, ""],
+    ["Let's set up a quick sync to go over the requirements.", "sentence", "", "", "proposing a short meeting", "", "", "", "template", now, ""],
+    ["I think the trade-off is worth it in this case.", "sentence", "", "", "accepting a compromise", "", "", "", "template", now, ""],
+    ["That's outside my area, but I can connect you with someone who knows.", "sentence", "", "", "redirecting helpfully", "", "", "", "template", now, ""],
+  ];
+
+  var startRow = lastRow < 2 ? 2 : lastRow + 1;
+  sh.getRange(startRow, 1, rows.length, HEADERS.length).setValues(rows);
+
+  // Auto-enrich single words (IPA, audio, meaning)
+  run_(false);
+
+  SpreadsheetApp.getActive().toast(
+    "Added " + rows.length + " starter rows. Enrichment ran for single words.",
+    "English",
+    8,
+  );
 }
 
 /* ================================================================== */
