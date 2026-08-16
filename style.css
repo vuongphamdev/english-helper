@@ -184,37 +184,22 @@ body {
 
 /* ---------- layout ---------- */
 .layout {
-  display: flex;
-  gap: 0;
+  display: grid;
+  grid-template-columns: 172px minmax(0, 1fr);
+  gap: 0 28px;
+  align-items: start;
 }
 
 aside {
-  display: none;
+  position: sticky;
+  top: 80px;
+  padding-top: 12px;
 }
 
 main {
   min-width: 0;
-  flex: 1;
   position: relative;
   z-index: 1
-}
-
-/* desktop: aside is a fixed sidebar */
-@media (min-width:861px) {
-  aside {
-    display: block;
-    width: 172px;
-    flex: none;
-    position: sticky;
-    top: 80px;
-    align-self: flex-start;
-    padding-top: 12px;
-    margin-right: 28px;
-  }
-
-  main {
-    max-width: 860px;
-  }
 }
 
 /* thumb tabs, cut into the edge of the book */
@@ -747,7 +732,6 @@ footer code {
   }
 
   aside {
-    display: block;
     position: sticky;
     top: 68px;
     z-index: 20;
