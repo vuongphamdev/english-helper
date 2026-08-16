@@ -185,6 +185,25 @@ body {
   border-bottom: 1px solid currentColor;
 }
 
+/* ---------- sort control ---------- */
+#sortctl {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--indigo);
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: 3px 6px;
+  cursor: pointer;
+  appearance: auto;
+}
+
+#sortctl:hover {
+  border-color: var(--indigo)
+}
+
 /* ---------- layout: main column + thumb index ---------- */
 .layout {
   display: grid;
@@ -492,6 +511,26 @@ dl.terms dd .ex {
   border-radius: 2px;
   margin-left: 8px;
   vertical-align: 1px;
+}
+
+.pos-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--indigo);
+  background: var(--indigo-tint);
+  padding: 2px 7px;
+  border-radius: 2px;
+  margin-left: 8px;
+  vertical-align: 2px;
+}
+
+.vi {
+  margin: 4px 0 0;
+  font-size: 15px;
+  color: var(--muted);
+  font-style: italic;
 }
 
 /* entries that came from the sheet */

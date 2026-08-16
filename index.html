@@ -44,6 +44,12 @@
         <span id="status">All sections</span>
         <span id="sync"></span>
         <button id="random" type="button">Random entry</button>
+        <select id="sortctl" aria-label="Sort order">
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
+          <option value="az">A – Z</option>
+          <option value="za">Z – A</option>
+        </select>
       </div>
     </div>
 
@@ -90,9 +96,11 @@
         section: TYPE_TO_SECTION[item.type] || "vocabulary",
         group: "From my sheet",
         title: item.term,
+        pos: item.pos || "",
         ipa: item.ipa || "",
         audio: fixAudioUrl(item.audio),
         meaning: item.meaning || "",
+        vietnamese: item.vietnamese || "",
         example: item.example || "",
         note: item.note || "",
         tags: item.tags || [],
@@ -150,6 +158,9 @@
 
     let query = "";
     let active = SECTIONS[0].id;
+    let sortMode = "newest";
+
+    const WORD_SECTIONS = new Set(["vocabulary", "slang", "collocations", "sentences"]);
 
     function hl(str) {
       const t = soft(str);
@@ -220,9 +231,11 @@
       let h = '<article class="entry word" id="' + slug(e) + '">';
       h += '<div class="wordhead"><h3>' + hl(e.title) + '</h3>';
       if (e.ipa) h += '<span class="ipa">' + hl(e.ipa) + '</span>';
+      if (e.pos) h += '<span class="pos-tag">' + hl(e.pos) + '</span>';
       h += sayButton(e.title, e.audio);
       h += '</div>';
       if (e.meaning) e.meaning.split("\n").forEach(m => h += '<p class="use">' + hl(m) + '</p>');
+      if (e.vietnamese) h += '<p class="vi">' + hl(e.vietnamese) + '</p>';
       if (e.example) h += '<ul class="ex"><li>' + hl(e.example) + '</li></ul>';
       if (e.note) h += '<p class="note">' + hl(e.note) + '</p>';
       const chips = (e.tags || []).slice();
@@ -289,15 +302,34 @@
       }).join("");
     }
 
+    function sortWords(arr) {
+      const words = arr.filter(e => e.kind === "word");
+      const rest = arr.filter(e => e.kind !== "word");
+      if (words.length === 0) return arr;
+      words.sort((a, b) => {
+        if (sortMode === "newest") return (b.added || "").localeCompare(a.added || "");
+        if (sortMode === "oldest") return (a.added || "").localeCompare(b.added || "");
+        if (sortMode === "az") return (a.title || "").localeCompare(b.title || "", undefined, { sensitivity: "base" });
+        /* za */ return (b.title || "").localeCompare(a.title || "", undefined, { sensitivity: "base" });
+      });
+      return rest.concat(words);
+    }
+
     function renderMain() {
       const main = document.getElementById("main");
       const shown = query ? SECTIONS : SECTIONS.filter(s => s.id === active);
       let html = "";
       let total = 0;
 
+      /* show sort control only when a word-bearing section is visible */
+      const sortEl = document.getElementById("sortctl");
+      const showSort = !query && WORD_SECTIONS.has(active);
+      sortEl.style.display = showSort ? "" : "none";
+
       shown.forEach(sec => {
-        const list = ENTRIES.filter(e => e.section === sec.id && matches(e));
+        let list = ENTRIES.filter(e => e.section === sec.id && matches(e));
         if (query && list.length === 0) return;
+        list = sortWords(list);
         total += list.length;
         html += '<section class="sectionhead"><h2>' + (query ? sec.label : sec.title) + '</h2>' +
           (query ? '' : '<p>' + sec.blurb + '</p>') + '</section>';
@@ -372,6 +404,11 @@
         el.scrollIntoView({ behavior: "smooth", block: "center" }); el.classList.add("flash");
         setTimeout(() => el.classList.remove("flash"), 1200);
       }
+    });
+
+    document.getElementById("sortctl").addEventListener("change", ev => {
+      sortMode = ev.target.value;
+      render();
     });
 
     document.getElementById("main").addEventListener("click", ev => {
