@@ -188,10 +188,21 @@ async function saveEntry() {
   saveButton.disabled = true;
   output.textContent = "Saving…";
 
+  // Auto-fill Vietnamese if empty
+  const viInput = $("saveVi");
+  if (!viInput.value.trim()) {
+    try {
+      const res = await chrome.runtime.sendMessage({
+        type: "qt:translate", text, target: "vi", provider: "google"
+      });
+      if (res?.ok) viInput.value = res.text;
+    } catch {}
+  }
+
   try {
     const res = await chrome.runtime.sendMessage({
       type: "qt:save",
-      item: { type: saveTypeSelect.value, term: text }
+      item: { type: saveTypeSelect.value, term: text, vietnamese: $("saveVi").value.trim() }
     });
 
     output.textContent = "";
@@ -312,4 +323,12 @@ chrome.commands?.getAll?.((commands) => {
 
 $("shortcuts").addEventListener("click", () => {
   chrome.tabs.create({ url: "chrome://extensions/shortcuts" });
+});
+
+$("openSidePanel").addEventListener("click", async () => {
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  if (tab?.id) {
+    chrome.runtime.sendMessage({ type: "qt:open-sidepanel", tabId: tab.id });
+  }
+  window.close();
 });
