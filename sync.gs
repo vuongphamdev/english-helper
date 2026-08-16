@@ -903,7 +903,7 @@ function doGet(e) {
                 return s.trim();
               })
               .filter(String),
-            added: r[9] ? new Date(r[9]).toISOString().slice(0, 10) : "",
+            added: r[9] ? (function() { try { return new Date(r[9]).toISOString().slice(0, 10); } catch(e) { return ""; } })() : "",
             audio: fixAudioUrl_(String(r[10] || "")),
           };
         })
